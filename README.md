@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/winebarrel/rdsauth/actions/workflows/ci.yml/badge.svg)](https://github.com/winebarrel/rdsauth/actions/workflows/ci.yml)
 
-rdsauth is a toll to rdsauth an auth token used to connect to a db with IAM credentials.
+rdsauth is a tool to generate an auth token used to connect to a db with IAM credentials.
 
 ## Download
 
