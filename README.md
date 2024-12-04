@@ -10,11 +10,23 @@ https://github.com/winebarrel/rdsauth/releases/latest
 
 ## Usage
 
+```
+Usage: rdsauth <url> [flags]
+
+Arguments:
+  <url>    Database URL
+
+Flags:
+  -h, --help       Show help.
+  -e, --export     Output as environment variable.
+      --version
+```
+
 ### PostgreSQL
 
 ```sh
 $ MY_DB_HOST=database-1.cluster-abcdef012345.us-east-1.rds.amazonaws.com
-$ export PGPASSWORD=$(rdsauth postgres://scott@$MY_DB_HOST)
+$ $(rdsauth postgres://scott@$MY_DB_HOST -e)
 $ psql -h $MY_DB_HOST -U scott
 ...
 postgres=>
@@ -24,7 +36,7 @@ postgres=>
 
 ```sh
 $ MY_DB_HOST=database-1.cluster-abcdef012345.us-east-1.rds.amazonaws.com
-$ export MYSQL_PWD=$(rdsauth mysql://scott@$MY_DB_HOST)
+$ $(rdsauth -e mysql://scott@$MY_DB_HOST)
 $ psql -h $MY_DB_HOST -u scott --enable-cleartext-plugin
 ...
 mysql>
@@ -36,7 +48,7 @@ mysql>
 $ dig +short cname my-db.example.com
 database-1.cluster-abcdef012345.us-east-1.rds.amazonaws.com
 
-$ export PGPASSWORD=$(rdsauth postgres://scott@my-db.example.com)
+$ $(rdsauth -e postgres://scott@my-db.example.com)
 $ psql -h my-db.example.com -U scott
 ...
 postgres=>

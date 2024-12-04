@@ -16,26 +16,43 @@ func init() {
 	log.SetFlags(0)
 }
 
-var cli struct {
-	URL     *url.URL `kong:"arg='',required,help='Database URL'"`
-	Version kong.VersionFlag
+type Options struct {
+	URL    *url.URL `kong:"arg='',required,help='Database URL'"`
+	Export bool     `kong:"short='e',help='Output as environment variable.'"`
 }
 
-func parseArgs() *url.URL {
+func parseArgs() *Options {
+	var cli struct {
+		Options
+		Version kong.VersionFlag
+	}
+
 	parser := kong.Must(&cli, kong.Vars{"version": version})
 	parser.Model.HelpFlag.Help = "Show help."
 	_, err := parser.Parse(os.Args[1:])
 	parser.FatalIfErrorf(err)
-	return cli.URL
+
+	return &cli.Options
 }
 
 func main() {
-	url := parseArgs()
-	token, err := rdsauth.GetToken(url)
+	options := parseArgs()
+	token, err := rdsauth.GetToken(options.URL)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(token)
+	if options.Export {
+		switch options.URL.Scheme {
+		case "mysql":
+			fmt.Printf("export MYSQL_PWD='%s'\n", token)
+		case "postgres", "postgresql":
+			fmt.Printf("export PGPASSWORD='%s'\n", token)
+		default:
+			log.Fatalf("unimplemented database: %s", options.URL.Scheme)
+		}
+	} else {
+		fmt.Println(token)
+	}
 }
