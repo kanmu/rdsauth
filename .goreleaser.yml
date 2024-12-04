@@ -13,7 +13,7 @@ checksum:
 nfpms:
   - file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
     homepage: https://github.com/winebarrel/rdsauth
-    description: rdsauth is a toll to rdsauth an auth token used to connect to a db with IAM credentials.
+    description: rdsauth is a tool to generate an auth token used to connect to a db with IAM credentials.
     license: MIT
     maintainer: "Genki Sugawara <sugawara@winebarrel.jp>"
     formats:
