@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 	"net/url"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/rds/auth"
@@ -16,10 +17,16 @@ func GetToken(url *url.URL) (string, error) {
 		return "", err
 	}
 
-	host, err := net.LookupCNAME(url.Hostname())
+	host := url.Hostname()
 
-	if err != nil {
-		return "", err
+	if !strings.HasSuffix(host, ".rds.amazonaws.com") {
+		host, err = net.LookupCNAME(host)
+
+		if err != nil {
+			return "", err
+		}
+
+		host = strings.TrimSuffix(host, ".")
 	}
 
 	port := url.Port()
@@ -33,7 +40,7 @@ func GetToken(url *url.URL) (string, error) {
 		}
 	}
 
-	token, err := auth.BuildAuthToken(context.Background(), host+":"+port, cfg.Region, url.User.Username(), cfg.Credentials)
+	token, err := auth.BuildAuthToken(context.Background(), host+":"+port, "ap-northeast-1", url.User.Username(), cfg.Credentials)
 
 	if err != nil {
 		return "", err
