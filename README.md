@@ -4,6 +4,10 @@
 
 Generates an auth token used to connect to a db with IAM credentials.
 
+## Download
+
+https://github.com/winebarrel/rdsauth/releases/latest
+
 ## Usage
 
 ```sh
