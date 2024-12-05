@@ -1,4 +1,4 @@
-module github.com/winebarrel/rdsauth
+module github.com/kanmu/rdsauth
 
 go 1.23.2
 

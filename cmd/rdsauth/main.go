@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
-	"github.com/winebarrel/rdsauth"
+	"github.com/kanmu/rdsauth"
 )
 
 var version string

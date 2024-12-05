@@ -1,12 +1,12 @@
 # rdsauth
 
-[![CI](https://github.com/winebarrel/rdsauth/actions/workflows/ci.yml/badge.svg)](https://github.com/winebarrel/rdsauth/actions/workflows/ci.yml)
+[![CI](https://github.com/kanmu/rdsauth/actions/workflows/ci.yml/badge.svg)](https://github.com/kanmu/rdsauth/actions/workflows/ci.yml)
 
 rdsauth is a tool to generate an auth token used to connect to a db with IAM credentials.
 
 ## Download
 
-https://github.com/winebarrel/rdsauth/releases/latest
+https://github.com/kanmu/rdsauth/releases/latest
 
 ## Usage
 
