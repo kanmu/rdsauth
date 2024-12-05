@@ -46,9 +46,9 @@ func main() {
 	if options.Export {
 		switch options.URL.Scheme {
 		case "mysql":
-			fmt.Printf("export MYSQL_PWD='%s'\n", token)
+			fmt.Printf("export MYSQL_PWD=%s\n", token)
 		case "postgres", "postgresql":
-			fmt.Printf("export PGPASSWORD='%s'\n", token)
+			fmt.Printf("export PGPASSWORD=%s\n", token)
 		default:
 			log.Fatalf("unimplemented database: %s", options.URL.Scheme)
 		}
