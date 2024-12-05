@@ -37,7 +37,7 @@ postgres=>
 ```sh
 $ MY_DB_HOST=database-1.cluster-abcdef012345.us-east-1.rds.amazonaws.com
 $ $(rdsauth -e mysql://scott@$MY_DB_HOST)
-$ psql -h $MY_DB_HOST -u scott --enable-cleartext-plugin
+$ mysql -h $MY_DB_HOST -u scott --enable-cleartext-plugin
 ...
 mysql>
 ```
