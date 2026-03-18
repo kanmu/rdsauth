@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/alecthomas/kong v1.14.0
 	github.com/aws/aws-sdk-go-v2/config v1.32.12
-	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.19
+	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.20
 )
 
 require (
