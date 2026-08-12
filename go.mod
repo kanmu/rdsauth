@@ -3,7 +3,7 @@ module github.com/kanmu/rdsauth
 go 1.24
 
 require (
-	github.com/alecthomas/kong v1.16.0
+	github.com/alecthomas/kong v1.16.1
 	github.com/aws/aws-sdk-go-v2/config v1.32.34
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.34
 )
