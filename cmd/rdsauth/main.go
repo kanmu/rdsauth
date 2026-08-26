@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/url"
 	"os"
 
 	"github.com/alecthomas/kong"
@@ -17,8 +16,8 @@ func init() {
 }
 
 type Options struct {
-	URL    *url.URL `kong:"arg='',required,help='Database URL'"`
-	Export bool     `kong:"short='e',help='Output as environment variable.'"`
+	rdsauth.Options
+	Export bool `kong:"short='e',help='Output as environment variable.'"`
 }
 
 func parseArgs() *Options {
@@ -37,7 +36,7 @@ func parseArgs() *Options {
 
 func main() {
 	options := parseArgs()
-	token, err := rdsauth.GetToken(options.URL)
+	token, err := rdsauth.GetToken(&options.Options)
 
 	if err != nil {
 		log.Fatal(err)
