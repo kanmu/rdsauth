@@ -17,8 +17,10 @@ Arguments:
   <url>    Database URL
 
 Flags:
-  -h, --help       Show help.
-  -e, --export     Output as environment variable.
+  -h, --help               Show help.
+  -e, --export             Output as environment variable.
+      --profile=STRING     AWS credentials profile name.
+      --sso-role=STRING    Override sso_role_name for every profile, e.g. ReadOnlyAccess.
       --version
 ```
 

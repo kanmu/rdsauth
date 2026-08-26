@@ -3,20 +3,30 @@ package rdsauth
 import (
 	"context"
 	"net"
-	"net/url"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials/ssocreds"
 	"github.com/aws/aws-sdk-go-v2/feature/rds/auth"
 )
 
-func GetToken(url *url.URL) (string, error) {
-	cfg, err := config.LoadDefaultConfig(context.Background())
+func GetToken(options *Options) (string, error) {
+	awsopts := []func(*config.LoadOptions) error{}
+	if options.Profile != "" {
+		awsopts = append(awsopts, config.WithSharedConfigProfile(options.Profile))
+	}
+	if options.SSORole != "" {
+		awsopts = append(awsopts, config.WithSSOProviderOptions(func(o *ssocreds.Options) {
+			o.RoleName = options.SSORole
+		}))
+	}
+	cfg, err := config.LoadDefaultConfig(context.Background(), awsopts...)
 
 	if err != nil {
 		return "", err
 	}
 
+	url := options.URL
 	host := url.Hostname()
 
 	if !strings.HasSuffix(host, ".rds.amazonaws.com") {
