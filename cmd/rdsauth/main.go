@@ -15,9 +15,14 @@ func init() {
 	log.SetFlags(0)
 }
 
-func parseArgs() *rdsauth.Options {
+type Options struct {
+	rdsauth.Options
+	Export bool `kong:"short='e',help='Output as environment variable.'"`
+}
+
+func parseArgs() *Options {
 	var cli struct {
-		rdsauth.Options
+		Options
 		Version kong.VersionFlag
 	}
 
@@ -31,7 +36,7 @@ func parseArgs() *rdsauth.Options {
 
 func main() {
 	options := parseArgs()
-	token, err := rdsauth.GetToken(options)
+	token, err := rdsauth.GetToken(&options.Options)
 
 	if err != nil {
 		log.Fatal(err)

@@ -6,7 +6,6 @@ import (
 
 type Options struct {
 	URL     *url.URL `kong:"arg='',required,help='Database URL'"`
-	Export  bool     `kong:"short='e',help='Output as environment variable.'"`
 	Profile string   `kong:"help='AWS credentials profile name.'"`
 	SSORole string   `kong:"help='Override sso_role_name for every profile, e.g. ReadOnlyAccess.'"`
 }
