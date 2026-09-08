@@ -2,6 +2,7 @@ package rdsauth
 
 import (
 	"context"
+	"errors"
 	"net"
 	"os"
 	"strings"
@@ -64,13 +65,37 @@ func GetToken(options *Options) (string, error) {
 		}
 	}
 
-	token, err := auth.BuildAuthToken(ctx, host+":"+port, cfg.Region, url.User.Username(), cfg.Credentials)
+	region := cfg.Region
+
+	if region == "" {
+		region = regionFromHost(host)
+	}
+
+	if region == "" {
+		return "", errors.New("could not determine the AWS region: set region in the profile or AWS_REGION")
+	}
+
+	token, err := auth.BuildAuthToken(ctx, host+":"+port, region, url.User.Username(), cfg.Credentials)
 
 	if err != nil {
 		return "", err
 	}
 
 	return token, nil
+}
+
+// regionFromHost extracts the region from an RDS endpoint hostname,
+// e.g. "database-1.cluster-abc.ap-northeast-1.rds.amazonaws.com".
+func regionFromHost(host string) string {
+	prefix, ok := strings.CutSuffix(host, ".rds.amazonaws.com")
+
+	if !ok {
+		return ""
+	}
+
+	labels := strings.Split(prefix, ".")
+
+	return labels[len(labels)-1]
 }
 
 func deviceAuth(ctx context.Context, options *Options) (*awsdag.Credentials, error) {
