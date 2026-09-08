@@ -18,9 +18,12 @@ Arguments:
 
 Flags:
   -h, --help               Show help.
-  -e, --export             Output as environment variable.
       --profile=STRING     AWS credentials profile name.
-      --sso-role=STRING    Override sso_role_name for every profile, e.g. ReadOnlyAccess.
+      --sso-role=STRING    Override sso_role_name for every profile, e.g.
+                           ReadOnlyAccess.
+      --device-auth        Sign in to IAM Identity Center with the OAuth 2.0
+                           device authorization grant (no browser needed).
+  -e, --export             Output as environment variable.
       --version
 ```
 
@@ -43,6 +46,27 @@ $ mysql -h $MY_DB_HOST -u scott --enable-cleartext-plugin
 ...
 mysql>
 ```
+
+### Device authorization grant
+
+On a machine with no browser (e.g. over ssh), `--device-auth` signs in to IAM
+Identity Center with the [OAuth 2.0 device authorization grant](https://github.com/winebarrel/awsdag)
+instead of resolving credentials the usual way. The Identity Center settings
+come from the profile in `~/.aws/config`.
+
+```sh
+$ $(rdsauth -e --device-auth --profile dev postgres://scott@$MY_DB_HOST)
+Open the following URL in a browser and confirm the code:
+
+  https://device.sso.us-east-1.amazonaws.com/?user_code=ABCD-EFGH
+  ABCD-EFGH
+
+$ psql -h $MY_DB_HOST -U scott
+```
+
+If the profile does not specify `sso_account_id` or `sso_role_name`, the
+account and role are chosen interactively. `--sso-role` overrides the role
+here too.
 
 ### CNAME support
 
