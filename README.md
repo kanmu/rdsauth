@@ -37,6 +37,13 @@ $ psql -h $MY_DB_HOST -U scott
 postgres=>
 ```
 
+If the URL has no user, `PGUSER` is used.
+
+```sh
+$ export PGUSER=scott
+$ $(rdsauth -e postgres://$MY_DB_HOST)
+```
+
 ### MySQL
 
 ```sh
