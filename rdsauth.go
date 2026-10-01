@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net"
+	"net/url"
 	"os"
 	"strings"
 
@@ -75,13 +76,27 @@ func GetToken(options *Options) (string, error) {
 		return "", errors.New("could not determine the AWS region: set region in the profile or AWS_REGION")
 	}
 
-	token, err := auth.BuildAuthToken(ctx, host+":"+port, region, url.User.Username(), cfg.Credentials)
+	token, err := auth.BuildAuthToken(ctx, host+":"+port, region, username(url), cfg.Credentials)
 
 	if err != nil {
 		return "", err
 	}
 
 	return token, nil
+}
+
+// username returns the user in the URL, falling back to PGUSER for PostgreSQL.
+func username(u *url.URL) string {
+	if name := u.User.Username(); name != "" {
+		return name
+	}
+
+	switch u.Scheme {
+	case "postgres", "postgresql":
+		return os.Getenv("PGUSER")
+	}
+
+	return ""
 }
 
 // regionFromHost extracts the region from an RDS endpoint hostname,
